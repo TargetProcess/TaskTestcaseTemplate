@@ -5,6 +5,10 @@
         "modules": true
     },
 
+    "parserOptions": {
+        "sourceType": "module"
+    },
+
     "plugins": [
         "react"
     ],
@@ -19,13 +23,13 @@
     "rules": {
         "no-alert": 2,
         "no-array-constructor": 2,
-        "no-arrow-condition": 2,
         "no-bitwise": 2,
         "no-caller": 2,
         "no-case-declarations": 2,
         "no-catch-shadow": 0,
         "no-class-assign": 2,
         "no-cond-assign": 2,
+        "no-confusing-arrow": "error",
         "no-console": 0,
         "no-const-assign": 2,
         "no-constant-condition": 2,
@@ -41,7 +45,6 @@
         "no-else-return": 0,
         "no-empty": 2,
         "no-empty-character-class": 2,
-        "no-empty-label": 2,
         "no-empty-pattern": 2,
         "no-eq-null": 2,
         "no-eval": 2,
@@ -69,7 +72,7 @@
         "no-loop-func": 2,
         "no-mixed-requires": 2,
         "no-mixed-spaces-and-tabs": [2, false],
-        "linebreak-style": [2, "unix"],
+        "linebreak-style": [0, "unix"],
         "no-multi-spaces": 2,
         "no-multi-str": 2,
         "no-multiple-empty-lines": [2, {"max": 1}],
@@ -161,6 +164,7 @@
         "init-declarations": 0,
         "jsx-quotes": [2, "prefer-double"],
         "key-spacing": [2, {"beforeColon": false, "afterColon": true}],
+        "keyword-spacing": ["error", {"before": true, "after": true}],
         "lines-around-comment": 0,
         "max-depth": [0, 3],
         "max-len": [2, 120, 4],
@@ -182,7 +186,7 @@
         "prefer-reflect": 0,
         "prefer-template": 1,
         "quote-props": [1, "as-needed"],
-        "quotes": [2, "single"],
+        "quotes": [2, "single", {"allowTemplateLiterals": true}],
         "radix": 2,
         "id-match": 0,
         "require-jsdoc": 0,
@@ -190,13 +194,10 @@
         "semi": [2, "always"],
         "semi-spacing": [2, {"before": false, "after": true}],
         "sort-vars": 0,
-        "space-after-keywords": [2, "always"],
-        "space-before-keywords": [2, "always"],
         "space-before-blocks": [2, "always"],
         "space-before-function-paren": [2, "never"],
         "space-in-parens": [2, "never"],
         "space-infix-ops": 2,
-        "space-return-throw-case": 2,
         "space-unary-ops": [2, { "words": true, "nonwords": false }],
         "spaced-comment": [2, "always"],
         "strict": 0,
@@ -218,10 +219,10 @@
         "react/jsx-no-duplicate-props": 2,
         "react/jsx-no-literals": 1,
         "react/jsx-no-undef": 2,
-        "react/jsx-sort-prop-types": 2,
         "react/jsx-sort-props": 1,
         "react/jsx-uses-react": 2,
         "react/jsx-uses-vars": 2,
+        "react/jsx-wrap-multilines": 2,
         "react/no-danger": 0,
         "react/no-did-mount-set-state": 0,
         "react/no-did-update-set-state": 2,
@@ -235,6 +236,6 @@
         "react/require-extension": 0,
         "react/self-closing-comp": 2,
         "react/sort-comp": [2, {"order": ["lifecycle", "render", "/^render.+$/", "/^handle.+$/", "everything-else"]}],
-        "react/wrap-multilines": 2
+        "react/sort-prop-types": 2
     }
 }
