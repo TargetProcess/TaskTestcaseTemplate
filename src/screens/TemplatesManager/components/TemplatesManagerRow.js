@@ -45,7 +45,7 @@ var TemplatesManagerRow = React.createClass({
                         <div className="tm-caption">
                             <b className="task">Tasks</b>
                             <span className="counter">{tasksCount}</span>
-                            <button className="tau-btn tau-btn-small tau-success tau-icons-general-after"
+                            <button className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
                                 disabled={hasNewTask}
                                 onClick={this.handleCreateTask}></button>
                         </div>
@@ -57,7 +57,7 @@ var TemplatesManagerRow = React.createClass({
                         <div className="tm-caption">
                             <b className="test-case">Test Cases</b>
                             <span className="counter">{testCasesCount}</span>
-                            <button className="tau-btn tau-btn-small tau-success tau-icons-general-after"
+                            <button className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
                                 disabled={hasNewTestCase}
                                 onClick={this.handleCreateTestCase}></button>
                         </div>
@@ -98,8 +98,8 @@ var TemplatesManagerRow = React.createClass({
                 <tr className={className}>
                     <td className="td-name">
                         <div className="td-name-inner">
-                            <i
-                                className={cx({'tau-icons-general-before tm-expander': true, active: item.isExpanded})}
+                            <span
+                                className={cx({'tm-expander tau-icon-general': true, 'tau-icon-b-direction active': item.isExpanded, 'tau-icon-r-direction': !item.isExpanded})}
                                 onClick={this.handleToggleRow}
                             />
                             {inner}

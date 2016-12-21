@@ -39,8 +39,9 @@ var TemplatesManager = React.createClass({
 
         return (
             <div className="templates-mashap">
-                <div className="tm-add-btn tau-icons-general-before" onClick={this.handleCreateTemplate}>
-                    {'Add template'}
+                <div className="tm-add-btn" onClick={this.handleCreateTemplate}>
+                    <span className="tau-icon-general tau-icon-plus"></span>
+                    <span className="tm-add-btn__text">{'Add template'}</span>
                 </div>
                 <table className="tm-grid">
                     {store.items.map((v) => (

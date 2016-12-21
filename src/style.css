@@ -5,34 +5,20 @@
     color: #16343b;
 }
 .templates-mashap .tm-add-btn {
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
     color: #8bb648;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 26px;
-    padding: 0 8px 0 24px;
     margin-bottom: 10px;
-    border-radius: 2px;
+    border-radius: 3px;
+    line-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    padding: 0 7px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
 }
-.templates-mashap .tm-add-btn:before {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 10px;
-    background-position: -60px -109px;
-    position: absolute;
-    top: 8px;
-    left: 8px;
-}
-.templates-mashap .tm-add-btn:hover {
-    background-color: #e6eef8;
-    color: #8596a7;
-}
-.templates-mashap .tm-add-btn:hover:before {
-    background-position: -110px -109px;
+.tm-add-btn__text {
+    margin-left: 6px;
 }
 .templates-mashap .tm-grid {
     width: 100%;
@@ -68,18 +54,15 @@
 .tm-grid .td-name .tm-name {
     display: inline-block;
     position: relative;
-    padding: 3px 22px 3px 15px;
+    padding: 4px 22px 4px 0;
     border: none;
     max-width: 100%;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    line-height: 0;
     cursor: pointer;
 }
 
 .tm-grid .td-name .tm-name.editableText {
-    padding: 7px 22px 6px 15px;
+    padding: 4px 22px 4px 0;
 }
 
 .tm-grid .td-name .tm-name span {
@@ -104,22 +87,9 @@
 }
 
 .tm-expander {
-    padding: 9px;
     cursor: pointer;
-}
-
-.tm-expander:before {
-    cursor: pointer;
-    content: "";
-    display: block;
-    background-position: -110px -158px;
-    width: 11px;
-    height: 11px;
-    top: 11px;
-    left: 8px;
-}
-.tm-expander.active:before {
-    background-position: -60px -160px;
+    margin: 0 6px 0 10px;
+    vertical-align: middle;
 }
 
 .tm-grid .td-name .tm-name:hover {
@@ -241,21 +211,6 @@
     vertical-align: middle;
     line-height: 12px;
     margin-right: 8px;
-}
-.tm-grid .edit-line .tm-caption .tau-btn {
-    width: 18px;
-    height: 18px;
-    position: relative;
-}
-.tm-grid .edit-line .tm-caption .tau-btn:after {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 11px;
-    position: absolute;
-    top: 2px;
-    left: 3px;
-    background-position: -10px -108px;
 }
 .tm-grid .edit-line .tm-item .view-mode:hover {
     background-color: #fff;
