@@ -1,20 +1,20 @@
+/* eslint-disable react/no-danger */
 var React = require('react/addons');
 
 var cx = React.addons.classSet;
 
 var Sortable = {
-
-    update: function(to, from) {
+    update(to, from) {
         var data = this.props.data.items;
         data.splice(to, 0, data.splice(from, 1)[0]);
         this.props.sort(data, to);
     },
 
-    sortEnd: function() {
+    sortEnd() {
         this.props.sort(this.props.data.items, void 0);
     },
 
-    sortStart: function(e) {
+    sortStart(e) {
         this.dragged = e.currentTarget.dataset ?
             e.currentTarget.dataset.id :
             e.currentTarget.getAttribute('data-id');
@@ -26,7 +26,7 @@ var Sortable = {
         }
     },
 
-    move: function(over, append) {
+    move(over, append) {
         var to = Number(over.dataset.id);
         var from = this.props.data.dragging || Number(this.dragged);
         if (append) {
@@ -38,7 +38,7 @@ var Sortable = {
         this.update(to, from);
     },
 
-    dragOver: function(e) {
+    dragOver(e) {
         e.preventDefault();
         var over = e.currentTarget;
         var relY = e.clientY - over.getBoundingClientRect().top;
@@ -48,18 +48,16 @@ var Sortable = {
         this.move(over, placement);
     },
 
-    isDragging: function() {
+    isDragging() {
         return this.props.data.dragging === this.props.id;
     }
 };
 
 var StepEditorRow = React.createClass({
-
     mixins: [Sortable],
 
-    componentDidMount: function() {
+    componentDidMount() {
         this.documentListener = function(e) {
-
             if (this.isMounted() && !this.refs.row.getDOMNode().contains(e.target) &&
                 this.props.item.isEditing) {
                 this.props.store.saveStep(this.props.item);
@@ -69,50 +67,57 @@ var StepEditorRow = React.createClass({
         document.addEventListener('click', this.documentListener);
     },
 
-    componentDidUpdate: function() {
-
+    componentDidUpdate() {
         if (this.refs.description) {
             this.refs.description.getDOMNode().focus();
         }
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         document.removeEventListener('click', this.documentListener);
     },
 
-    render: function() {
-
+    render() {
         var className = cx({
             'tm-stepeditor__row': true,
             'tm-stepeditor__row-dragging': this.isDragging()
         });
 
         var tr = (
-            <tr className={className}
-                ref="row"
+            <tr
+                className={className}
                 data-id={this.props.id}
                 draggable={this.props.item.isEditing ? null : true}
                 onDragEnd={this.sortEnd}
                 onDragOver={this.dragOver}
-                onDragStart={this.sortStart}>
+                onDragStart={this.sortStart}
+                ref="row"
+            >
 
                 <td onClick={this.handleEdit}>
-                    <div className="tm-description" ref="description"
+                    <div
+                        className="tm-description"
                         contentEditable={this.props.item.isEditing || null}
-                        dangerouslySetInnerHTML={{'__html': this.props.item.Description}}
-                        onBlur={this.handleSubmit}>
-                    </div>
+                        dangerouslySetInnerHTML={{__html: this.props.item.Description}}
+                        onBlur={this.handleSubmit}
+                        ref="description"
+                    />
                 </td>
                 <td onClick={this.handleEdit}>
-                    <div className="tm-description" ref="result"
+                    <div
+                        className="tm-description"
                         contentEditable={this.props.item.isEditing || null}
-                        dangerouslySetInnerHTML={{'__html': this.props.item.Result}}
-                        onBlur={this.handleSubmit}>
-                    </div>
+                        dangerouslySetInnerHTML={{__html: this.props.item.Result}}
+                        onBlur={this.handleSubmit}
+                        ref="result"
+                    />
                 </td>
                 <td style={{width: 57}}>
-                    <button type="button" className="tau-btn tau-attention tau-btn-small"
-                        onClick={this.handleRemove}>
+                    <button
+                        className="tau-btn tau-attention tau-btn-small"
+                        onClick={this.handleRemove}
+                        type="button"
+                    >
                         Delete
                     </button>
                 </td>
@@ -120,26 +125,24 @@ var StepEditorRow = React.createClass({
         );
 
         return tr;
-
     },
 
-    handleStopEdit: function() {
+    handleStopEdit() {
         this.props.store.saveStep(this.props.item);
     },
 
-    handleEdit: function() {
+    handleEdit() {
         if (!this.props.item.isEditing) {
             this.props.store.editStep(this.props.item);
         }
     },
 
-    handleRemove: function(e) {
+    handleRemove(e) {
         e.stopPropagation();
         this.props.store.removeStep(this.props.item);
     },
 
-    handleSubmit: function(e) {
-
+    handleSubmit(e) {
         if (e.relatedTarget &&
             (e.relatedTarget === this.refs.description.getDOMNode() ||
                 e.relatedTarget === this.refs.result.getDOMNode())
@@ -150,7 +153,6 @@ var StepEditorRow = React.createClass({
         this.props.item.Description = this.refs.description.getDOMNode().innerHTML;
         this.props.item.Result = this.refs.result.getDOMNode().innerHTML;
     }
-
 });
 
 module.exports = StepEditorRow;
