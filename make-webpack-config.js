@@ -1,5 +1,6 @@
 /* eslint-disable max-statements,no-prototype-builtins */
 var path = require('path');
+
 var webpack = require('webpack');
 
 var pkg = require('./package.json');
@@ -135,7 +136,12 @@ var makeWebpackConfig = function(opts_) {
     if (opts.production) {
         config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin({
             compress: {
+                properties: true,
+                screw_ie8: false,
                 warnings: false
+            },
+            output: {
+                screw_ie8: false
             }
         }));
     }
