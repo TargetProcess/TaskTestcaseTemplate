@@ -139,6 +139,7 @@ var store = {
 
     createTaskByTemplate(task, userStory) {
         const store = this.configurator.getStore();
+        var taskId = null;
 
         return store
             .saveDef('tasks', {
@@ -151,17 +152,33 @@ var store = {
                 fields: ['id', 'name', {userStory: ['id']}]
             })
             .then((res) => {
+                taskId = res.data.id;
+            })
+            .then(() => {
                 const team = getTeamOfUserStory(userStory);
                 if (!team) {
                     return null;
                 }
 
-                var taskId = res.data.id;
                 return store.saveDef('teamAssignments', {
                     $set: {
                         Assignable: {id: taskId},
                         Team: {id: team.id}
                     }
+                });
+            })
+            .then(() => {
+                const teamIteration = userStory.teamIteration;
+                if (!teamIteration || !teamIteration.id) {
+                    return null;
+                }
+
+                return store.saveDef('tasks', {
+                    id: taskId,
+                    $set: {
+                        teamIteration: {id: teamIteration.id}
+                    },
+                    fields: ['id', 'name', {teamIteration: ['id', 'name']}]
                 });
             });
     },
