@@ -6,17 +6,26 @@ var TemplatesManagerTask = require('./TemplatesManagerTask');
 var cx = React.addons.classSet;
 
 var TemplatesManagerRow = React.createClass({
+    renderInnerItem(item) {
+        if (item.status === 'edit') {
+            return (
+                <form className="tm-name" onSubmit={this.handleSaveForm}>
+                    <input autoFocus defaultValue={item.name} onBlur={this.handleSave} ref="name" type="text" />
+                </form>
+            );
+        }
 
-    render: function() {
+        return (
+            <div className="tm-name editableText" onClick={this.handleStartEdit}>
+                <span>{item.name}</span>
+            </div>
+        );
+    },
 
+    render() {
         var item = this.props.item;
-        var tasksCount = _.filter(item.tasks, function(v) {
-            return v.Id;
-        }).length;
-
-        var testCasesCount = _.filter(item.testCases, function(v) {
-            return v.Id;
-        }).length;
+        var tasksCount = _.filter(item.tasks, (v) => v.Id).length;
+        var testCasesCount = _.filter(item.testCases, (v) => v.Id).length;
 
         var hasNewTask = Boolean(item.tasks.length - tasksCount);
         var hasNewTestCase = Boolean(item.testCases.length - testCasesCount);
@@ -24,20 +33,13 @@ var TemplatesManagerRow = React.createClass({
         var expanded;
 
         if (item.isExpanded) {
+            var store = this.props.store;
 
-            var testCases = item.testCases.map(function(v) {
+            var testCases = item.testCases.map(
+                (v) => <TemplatesManagerTestCase item={v} key={`testcase${v.Id}`} store={store} />);
 
-                return (
-                    <TemplatesManagerTestCase key={'testcase' + v.Id} item={v} store={this.props.store} />
-                );
-            }.bind(this));
-
-            var tasks = item.tasks.map(function(v) {
-
-                return (
-                    <TemplatesManagerTask key={'task' + v.Id} item={v} store={this.props.store} />
-                );
-            }.bind(this));
+            var tasks = item.tasks.map(
+                (v) => <TemplatesManagerTask item={v} key={`task${v.Id}`} store={store} />);
 
             expanded = (
                 <tr className="edit-line">
@@ -45,9 +47,11 @@ var TemplatesManagerRow = React.createClass({
                         <div className="tm-caption">
                             <b className="task">Tasks</b>
                             <span className="counter">{tasksCount}</span>
-                            <button className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
+                            <button
+                                className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
                                 disabled={hasNewTask}
-                                onClick={this.handleCreateTask}></button>
+                                onClick={this.handleCreateTask}
+                            />
                         </div>
                         <div className="tm-body">
                             {tasks}
@@ -57,9 +61,11 @@ var TemplatesManagerRow = React.createClass({
                         <div className="tm-caption">
                             <b className="test-case">Test Cases</b>
                             <span className="counter">{testCasesCount}</span>
-                            <button className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
+                            <button
+                                className="tau-btn tau-btn-small tau-success tau-btn-quick-add"
                                 disabled={hasNewTestCase}
-                                onClick={this.handleCreateTestCase}></button>
+                                onClick={this.handleCreateTestCase}
+                            />
                         </div>
                         <div className="tm-body">
                             {testCases}
@@ -69,28 +75,15 @@ var TemplatesManagerRow = React.createClass({
             );
         }
 
-        var inner;
-
-        if (item.status === 'edit') {
-            inner = (
-                <form className="tm-name" onSubmit={this.handleSaveForm}>
-                    <input type="text" ref="name" defaultValue={item.name}
-                        autoFocus={true}
-                        onBlur={this.handleSave}
-                    />
-                </form>
-            );
-        } else {
-            inner = (
-                <div className="tm-name editableText" onClick={this.handleStartEdit}>
-                    <span>{item.name}</span>
-                </div>
-            );
-        }
-
         var className = cx({
             'info-line': true,
-            'active': item.isExpanded
+            'active': item.isExpanded // eslint-disable-line quote-props
+        });
+
+        var spanClassName = cx({
+            'tm-expander tau-icon-general': true,
+            'tau-icon-b-direction active': item.isExpanded,
+            'tau-icon-r-direction': !item.isExpanded
         });
 
         return (
@@ -98,11 +91,8 @@ var TemplatesManagerRow = React.createClass({
                 <tr className={className}>
                     <td className="td-name">
                         <div className="td-name-inner">
-                            <span
-                                className={cx({'tm-expander tau-icon-general': true, 'tau-icon-b-direction active': item.isExpanded, 'tau-icon-r-direction': !item.isExpanded})}
-                                onClick={this.handleToggleRow}
-                            />
-                            {inner}
+                            <span className={spanClassName} onClick={this.handleToggleRow} />
+                            {this.renderInnerItem(item)}
                         </div>
                     </td>
                     <td className="td-entities">
@@ -114,46 +104,48 @@ var TemplatesManagerRow = React.createClass({
                         <span className="counter">{testCasesCount}</span>
                     </td>
                     <td className="td-actions">
-                        <button type="button" className="tau-btn tau-attention"
-                            onClick={this.handleRemove}>Delete</button>
-                        <button type="button" className="tau-btn tau-primary"
-                            onClick={this.handleApply}>Apply template</button>
+                        <button
+                            className="tau-btn tau-attention"
+                            onClick={this.handleRemove}
+                            type="button"
+                        >Delete</button>
+                        <button
+                            className="tau-btn tau-primary"
+                            onClick={this.handleApply}
+                            type="button"
+                        >Apply template</button>
                     </td>
                 </tr>
                 {expanded}
             </tbody>
         );
-
     },
 
-    handleToggleRow: function() {
-
+    handleToggleRow() {
         this.props.store.toggleExpand(this.props.item);
     },
 
-    handleCreateTask: function() {
+    handleCreateTask() {
         this.props.store.createTask(this.props.item);
     },
 
-    handleCreateTestCase: function() {
+    handleCreateTestCase() {
         this.props.store.createTestCase(this.props.item);
     },
 
-    handleApply: function() {
+    handleApply() {
         this.props.store.applyTemplate(this.props.item);
     },
 
-    handleRemove: function() {
+    handleRemove() {
         this.props.store.removeTemplate(this.props.item);
     },
 
-    handleStartEdit: function() {
-
+    handleStartEdit() {
         this.props.store.editTemplate(this.props.item);
-
     },
 
-    handleSave: function() {
+    handleSave() {
         var val = this.refs.name.getDOMNode().value.trim();
         if (val) {
             this.props.item.name = val;
@@ -162,20 +154,14 @@ var TemplatesManagerRow = React.createClass({
     },
 
     handleSaveForm(e) {
-
         e.preventDefault();
 
         var val = this.refs.name.getDOMNode().value.trim();
-
         if (val) {
-
             this.props.item.name = val;
             this.props.store.saveTemplate(this.props.item);
-
         }
-
     }
-
 });
 
 module.exports = TemplatesManagerRow;

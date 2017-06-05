@@ -4,21 +4,19 @@ var StepEditorRow = require('./StepEditorRow');
 var cx = React.addons.classSet;
 
 var StepEditor = React.createClass({
-
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             store: null
         };
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return {
             isDragging: false
         };
     },
 
-    componentDidMount: function() {
-
+    componentDidMount() {
         this.updateHandler = function() {
             this.forceUpdate();
         }.bind(this);
@@ -27,34 +25,24 @@ var StepEditor = React.createClass({
         this.props.store.read();
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.props.store.removeListener('update', this.updateHandler);
     },
 
-    render: function() {
+    render() {
+        var store = this.props.store;
 
         var dragData = {
-            items: this.props.store.items,
-            dragging: this.props.store.lastMovedTo
+            items: store.items,
+            dragging: store.lastMovedTo
         };
 
-        var steps = this.props.store.items.map(function(v, k) {
-            return (
-                <StepEditorRow
-                    key={k}
-                    id={k}
-                    item={v}
-                    data={dragData}
-                    store={this.props.store}
-                    sort={this.sort}
-                />
-            );
-        }.bind(this));
+        var steps = store.items.map(
+            (v, k) => <StepEditorRow data={dragData} id={k} item={v} key={k} sort={this.sort} store={store} />);
 
         var header;
 
         if (steps.length) {
-
             var className = cx({
                 'tm-stepeditor__inner': true,
                 'tm-stepeditor__inner-dragging': this.state.isDragging
@@ -65,11 +53,9 @@ var StepEditor = React.createClass({
                     <tr className="tm-stepeditor__header">
                         <th>Step</th>
                         <th>Result</th>
-                        <th style={{width: 57}}></th>
+                        <th style={{width: 57}} />
                     </tr>
-                    <tbody className={className}
-                        onDragOver={this.handleDragOver}
-                        onDrop={this.handleDrop}>
+                    <tbody className={className} onDragOver={this.handleDragOver} onDrop={this.handleDrop}>
                         {steps}
                     </tbody>
                 </table>
@@ -84,11 +70,11 @@ var StepEditor = React.createClass({
         );
     },
 
-    handleAddStep: function() {
+    handleAddStep() {
         this.props.store.createStep();
     },
 
-    handleDragOver: function() {
+    handleDragOver() {
         if (!this.state.isDragging) {
             this.setState({
                 isDragging: true
@@ -96,16 +82,15 @@ var StepEditor = React.createClass({
         }
     },
 
-    handleDrop: function() {
+    handleDrop() {
         this.setState({
             isDragging: false
         });
     },
 
-    sort: function(steps, lastMovedTo) {
+    sort(steps, lastMovedTo) {
         this.props.store.reorderSteps(steps, lastMovedTo);
     }
-
 });
 
 module.exports = StepEditor;

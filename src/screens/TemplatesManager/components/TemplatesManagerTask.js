@@ -2,16 +2,12 @@ var React = require('react');
 var Form = require('./TemplatesManagerTaskForm');
 
 var TemplatesManagerTask = React.createClass({
-
-    render: function() {
-
+    render() {
         var item = this.props.item;
         var inner;
 
         if (item.status === 'edit') {
-            inner = (
-                <Form item={item} store={this.props.store} />
-            );
+            inner = <Form item={item} store={this.props.store} />;
         } else {
             inner = (
                 <div className="view-mode">
@@ -22,14 +18,10 @@ var TemplatesManagerTask = React.createClass({
             );
         }
 
-        return (
-            <div className="tm-item">
-                {inner}
-            </div>
-        );
+        return <div className="tm-item">{inner}</div>;
     },
 
-    handleStartEdit: function() {
+    handleStartEdit() {
         this.props.store.editTask(this.props.item);
     }
 });

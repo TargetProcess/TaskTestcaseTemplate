@@ -2,28 +2,23 @@ var _ = require('Underscore');
 var Event = require('tau/core/event');
 
 var Store = function(testcase) {
-
     this.testcase = testcase;
     this.items = [];
 };
 
 _.extend(Store.prototype, {
-
-    read: function() {
-
+    read() {
         this.items = _.deepClone(this.testcase.steps);
         this.fire('update');
     },
 
-    reorderSteps: function(items, lastMovedTo) {
-
+    reorderSteps(items, lastMovedTo) {
         this.items = items;
         this.lastMovedTo = lastMovedTo;
         this.fire('update');
     },
 
-    createStep: function() {
-
+    createStep() {
         this.items.push({
             Description: 'Do something',
             Result: 'Get something'
@@ -31,13 +26,12 @@ _.extend(Store.prototype, {
         this.fire('update');
     },
 
-    editStep: function(step) {
-
+    editStep(step) {
         if (step.isEditing) {
             return;
         }
 
-        this.items.forEach(function(v) {
+        this.items.forEach((v) => {
             v.isEditing = false;
         });
 
@@ -45,13 +39,12 @@ _.extend(Store.prototype, {
         this.fire('update');
     },
 
-    saveStep: function(step) {
-
+    saveStep(step) {
         step.isEditing = false;
         this.fire('update');
     },
 
-    removeStep: function(step) {
+    removeStep(step) {
         this.items = _.without(this.items, step);
         this.fire('update');
     }
