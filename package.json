@@ -10,7 +10,7 @@
   "author": "Aliaksei Shytkin <shitkin@targetprocess.com>",
   "scripts": {
     "test": "eslint . --quiet",
-    "start": "outputPath=$TARGETPROCESS_MASHUPS_PATH/$npm_package_name; rm -rf $outputPath && NODE_ENV=development webpack --watch --output-path $outputPath",
+    "start": "cross-env NODE_ENV=development webpack --watch",
     "build:production": "node scripts/buildProduction.js",
     "build:library": "node scripts/buildLibrary.js",
     "build:all": "npm run build:production && npm run build:library",
@@ -28,6 +28,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "combine-assets-plugin": "targetprocess/combine-assets-plugin",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.1",
