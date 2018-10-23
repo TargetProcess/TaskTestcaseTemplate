@@ -8,7 +8,7 @@ var pkg = require('./package.json');
 var TargetprocessMashupPlugin = require('targetprocess-mashup-webpack-plugin');
 var CombineAssetsPlugin = require('combine-assets-plugin');
 
-var makeWebpackConfig = function(opts_) {
+var makeWebpackConfig = function (opts_) {
     var opts = opts_ || {};
 
     // mashup unique name
@@ -70,7 +70,9 @@ var makeWebpackConfig = function(opts_) {
 
     config.output = {
         filename: '[name].js',
-        path: 'dist',
+        path: process.env.NODE_ENV ?
+            path.resolve(process.env.TARGETPROCESS_MASHUPS_PATH, './TaskTestCaseTemplate') :
+            'dist',
         chunkFilename: 'chunks/[id].[name].js',
         pathinfo: !opts.production,
         // should be unique to prevent collision with main webpack instance

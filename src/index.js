@@ -2,13 +2,10 @@
 import {when, Deferred} from 'jquery';
 import {noop, property, has} from 'underscore';
 import React from 'react';
-
-var view = require('tp/userStory/view');
-var configurator = require('tau/configurator');
-
+import view from 'tp/userStory/view';
+import configurator from 'tau/configurator';
 import TemplatesManager from './screens/TemplatesManager';
-
-require('./style.css');
+import'./style.css';
 
 const waitForAppConfigurator = () => {
     let appConfiguratorIsResolved = false;
@@ -33,15 +30,9 @@ const getAppConfigurator = waitForAppConfigurator();
 
 const getProject = (entity) =>
     getAppConfigurator()
-        .then((appConfigurator) =>
-            appConfigurator.getStore().getDef(entity.entityType.name, {
-                id: entity.id,
-                fields: [{
-                    project: ['Id']
-                }]
-            })
-        )
-        .then(property('project'));
+        .then(appConfigurator => appConfigurator.getStore2()
+            .find(`${entity.entityType.name}\\${entity.id}?select={project:{project.id}}`))
+        .then(response => response.length && response[0].project || null);
 
 const isTabEnabled = (entity, mashupConfig) => {
     const {showOnProjects} = mashupConfig;
