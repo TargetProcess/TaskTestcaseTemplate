@@ -5,6 +5,47 @@ var TemplatesManagerTask = require('./TemplatesManagerTask');
 
 var cx = React.addons.classSet;
 
+const Directions = {
+    TOP: 'top',
+    BOTTOM: 'bottom',
+    LEFT: 'left',
+    RIGHT: 'right'
+};
+
+const Rotations = {
+    [Directions.LEFT]: -270,
+    [Directions.TOP]: -180,
+    [Directions.BOTTOM]: 0,
+    [Directions.RIGHT]: -90
+};
+
+
+// TODO: switch to create-mashup-app because webpack 1 doesn't work with lodash-es and new componenets in package
+class CaretIcon extends React.Component {
+    render() {
+        return (
+            <svg
+                style={{
+                    transform: `rotate(${Rotations[this.props.direction]}deg)`,
+                    display: 'block',
+                    transition: 'transform 0.3s'
+                }}
+                width={16}
+                height={16}
+                viewBox={`0 0 ${16} ${16}`}
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M13.7071 4.79289C14.0976 5.18342 14.0976 5.81658 13.7071 6.20711L8.70711 11.2071C8.31658 11.5976 7.68342 11.5976 7.29289 11.2071L2.29289 6.20711C1.90237 5.81658 1.90237 5.18342 2.29289 4.79289C2.68342 4.40237 3.31658 4.40237 3.70711 4.79289L8 9.08579L12.2929 4.79289C12.6834 4.40237 13.3166 4.40237 13.7071 4.79289Z"
+                    fill="#404249" />
+            </svg>
+        );
+    }
+}
+
 var TemplatesManagerRow = React.createClass({
     renderInnerItem(item) {
         if (item.status === 'edit') {
@@ -80,18 +121,14 @@ var TemplatesManagerRow = React.createClass({
             'active': item.isExpanded // eslint-disable-line quote-props
         });
 
-        var spanClassName = cx({
-            'tm-expander tau-icon-general': true,
-            'tau-icon-b-direction active': item.isExpanded,
-            'tau-icon-r-direction': !item.isExpanded
-        });
-
         return (
             <tbody>
                 <tr className={className}>
                     <td className="td-name">
                         <div className="td-name-inner">
-                            <span className={spanClassName} onClick={this.handleToggleRow} />
+                            <span onClick={this.handleToggleRow} className="tm-expander">
+                                <CaretIcon direction={item.isExpanded ? 'bottom' : 'right'} />
+                            </span>
                             {this.renderInnerItem(item)}
                         </div>
                     </td>
